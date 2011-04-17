@@ -3,9 +3,9 @@ version: 0.1
 author: DiddiZ
 website: http://diddiz.insane-architects.net/
 main: de.diddiz.Superpickaxe.Superpickaxe
-description: Channels a string into a measuring tape.
+description: Adds a simple super pickaxe.
 commands:
   spa:
     description: 'Enables or disables super pickaxe'
     usage: 'Usage: /<command>'
-    aliases: [sp, /, ',']
+    aliases: []

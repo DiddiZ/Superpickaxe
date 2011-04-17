@@ -80,7 +80,7 @@ public class Superpickaxe extends JavaPlugin
 		public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
 			if (!event.isCancelled()) {
 				String msg = event.getMessage().toLowerCase();
-				if (msg.equals("//") || msg.equals("/,")) {
+				if (msg.equals("//") || msg.equals("/,") || msg.equals("sp")) {
 					event.setMessage("dummy");
 					event.setCancelled(true);
 					getServer().dispatchCommand(event.getPlayer(), "spa");

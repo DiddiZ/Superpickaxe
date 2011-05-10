@@ -44,12 +44,12 @@ public class Superpickaxe extends JavaPlugin
 				sender.sendMessage("You aren't a player");
 				return true;
 			}
-			Player player = (Player)sender;
+			final Player player = (Player)sender;
 			if (!(permissions != null && permissions.has(player, "superpickaxe.use")) && !player.isOp()) {
 				player.sendMessage(ChatColor.RED + "You aren't allowed to do that.");
 				return true;
 			}
-			int hash = player.getName().hashCode();
+			final int hash = player.getName().hashCode();
 			if (playerswithsp.contains(hash)) {
 				playerswithsp.remove(hash);
 				player.sendMessage(ChatColor.GREEN + "Super pickaxe disabled.");
@@ -64,10 +64,11 @@ public class Superpickaxe extends JavaPlugin
 
 	public class SPBlockListener extends BlockListener
 	{
+		@Override
 		public void onBlockDamage(BlockDamageEvent event) {
 			if (!event.isCancelled() && playerswithsp.contains(event.getPlayer().getName().hashCode())) {
 				if (event.getItemInHand() != null) {
-					int item = event.getItemInHand().getTypeId();
+					final int item = event.getItemInHand().getTypeId();
 					if (item == 270 || item == 274 || item == 278 || item == 285)
 						event.setInstaBreak(true);
 				}
@@ -77,9 +78,10 @@ public class Superpickaxe extends JavaPlugin
 
 	public class SPPlayerListener extends PlayerListener
 	{
+		@Override
 		public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
 			if (!event.isCancelled()) {
-				String msg = event.getMessage().toLowerCase();
+				final String msg = event.getMessage().toLowerCase();
 				if (msg.equals("//") || msg.equals("/,") || msg.equals("sp")) {
 					event.setMessage("dummy");
 					event.setCancelled(true);

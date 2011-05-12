@@ -1,7 +1,6 @@
 package de.diddiz.Superpickaxe;
 
 import java.util.HashSet;
-
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -12,7 +11,6 @@ import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.plugin.java.JavaPlugin;
-
 import com.nijiko.permissions.PermissionHandler;
 import com.nijikokun.bukkit.Permissions.Permissions;
 
@@ -33,12 +31,12 @@ public class Superpickaxe extends JavaPlugin
 	}
 
 	@Override
-	public void onDisable()	{
+	public void onDisable() {
 		getServer().getLogger().info("Superpickaxe disabled");
 	}
 
 	@Override
-	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args)	{
+	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 		if (cmd.getName().equalsIgnoreCase("spa")) {
 			if (!(sender instanceof Player)) {
 				sender.sendMessage("You aren't a player");

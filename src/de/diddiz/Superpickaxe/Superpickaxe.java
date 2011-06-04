@@ -56,21 +56,22 @@ public class Superpickaxe extends JavaPlugin
 				player.sendMessage(ChatColor.GREEN + "Super pickaxe enabled.");
 			}
 			return true;
-		} else
-			return false;
+		}
+		return false;
 	}
 
 	public class SPBlockListener extends BlockListener
 	{
 		@Override
 		public void onBlockDamage(BlockDamageEvent event) {
-			if (!event.isCancelled() && playerswithsp.contains(event.getPlayer().getName().hashCode())) {
+			if (!event.isCancelled() && playerswithsp.contains(event.getPlayer().getName().hashCode()))
 				if (event.getItemInHand() != null) {
 					final int item = event.getItemInHand().getTypeId();
 					if (item == 270 || item == 274 || item == 278 || item == 285)
-						event.setInstaBreak(true);
+						if (event.getBlock().getTypeId() == 7 && !(permissions != null && permissions.has(event.getPlayer(), "superpickaxe.breakBedrock")) && !event.getPlayer().isOp())
+							return;
+					event.setInstaBreak(true);
 				}
-			}
 		}
 	}
 

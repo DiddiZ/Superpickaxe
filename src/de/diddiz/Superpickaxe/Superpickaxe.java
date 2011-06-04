@@ -26,7 +26,7 @@ public class Superpickaxe extends JavaPlugin
 		getConfiguration().load();
 		getServer().getPluginManager().registerEvent(Event.Type.BLOCK_DAMAGE, new SPBlockListener(), Event.Priority.Normal, this);
 		if (getConfiguration().getBoolean("overrideWorldEditCommands", false))
-			getServer().getPluginManager().registerEvent(Event.Type.PLAYER_COMMAND_PREPROCESS, new SPPlayerListener(), Event.Priority.Normal, this);
+			getServer().getPluginManager().registerEvent(Event.Type.PLAYER_COMMAND_PREPROCESS, new SPPlayerListener(), Event.Priority.Lowest, this);
 		getServer().getLogger().info("Superpickaxe v" + getDescription().getVersion() + " by DiddiZ enabled");
 	}
 

@@ -3,6 +3,7 @@ version: 0.2b
 author: DiddiZ
 website: http://diddiz.insane-architects.net/
 main: de.diddiz.Superpickaxe.Superpickaxe
+depend: [Permissions]
 description: Adds a simple super pickaxe.
 commands:
   spa:

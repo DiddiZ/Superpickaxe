@@ -15,18 +15,19 @@ import com.nijikokun.bukkit.Permissions.Permissions;
 
 public class Superpickaxe extends JavaPlugin
 {
-	private PermissionHandler permissions = null;
+	private PermissionHandler permissions;
 	private final HashSet<Integer> playerswithsp = new HashSet<Integer>();
 
 	@Override
 	public void onEnable() {
 		final PluginManager pm = getServer().getPluginManager();
-		if (pm.getPlugin("Permissions") != null)
-			permissions = ((Permissions)pm.getPlugin("Permissions")).getHandler();
+		permissions = ((Permissions)pm.getPlugin("Permissions")).getHandler();
 		getConfiguration().load();
-		pm.registerEvent(Type.BLOCK_DAMAGE, new SPBlockListener(playerswithsp, permissions), Priority.Normal, this);
+		final SPPlayerListener playerListener = new SPPlayerListener(this, permissions);
+		pm.registerEvent(Type.BLOCK_DAMAGE, new SPBlockListener(this, permissions), Priority.Normal, this);
+		pm.registerEvent(Type.PLAYER_PORTAL, playerListener, Priority.Monitor, this);
 		if (getConfiguration().getBoolean("overrideWorldEditCommands", false))
-			pm.registerEvent(Event.Type.PLAYER_COMMAND_PREPROCESS, new SPPlayerListener(getServer()), Event.Priority.Lowest, this);
+			pm.registerEvent(Event.Type.PLAYER_COMMAND_PREPROCESS, playerListener, Event.Priority.Lowest, this);
 		getServer().getLogger().info("Superpickaxe v" + getDescription().getVersion() + " by DiddiZ enabled");
 	}
 
@@ -44,19 +45,28 @@ public class Superpickaxe extends JavaPlugin
 			return true;
 		}
 		final Player player = (Player)sender;
-		if (!(permissions != null && permissions.has(player, "superpickaxe.use")) && !player.isOp()) {
+		if (!permissions.has(player, "superpickaxe.use")) {
 			player.sendMessage(ChatColor.RED + "You aren't allowed to do this.");
 			return true;
 		}
-		final int hash = player.getName().hashCode();
-		if (playerswithsp.contains(hash)) {
-			playerswithsp.remove(hash);
-			player.sendMessage(ChatColor.GREEN + "Super pickaxe disabled.");
-		} else {
-			playerswithsp.add(hash);
-			player.sendMessage(ChatColor.GREEN + "Super pickaxe enabled.");
-		}
+		if (hasEnabled(player))
+			removePlayer(player);
+		else
+			addPlayer(player);
 		return true;
 	}
 
+	void addPlayer(Player player) {
+		playerswithsp.add(player.getName().hashCode());
+		player.sendMessage(ChatColor.GREEN + "Super pickaxe enabled.");
+	}
+
+	void removePlayer(Player player) {
+		playerswithsp.remove(player.getName().hashCode());
+		player.sendMessage(ChatColor.GREEN + "Super pickaxe disabled.");
+	}
+
+	boolean hasEnabled(Player player) {
+		return playerswithsp.contains(player.getName().hashCode());
+	}
 }

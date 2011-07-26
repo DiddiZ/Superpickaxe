@@ -3,10 +3,21 @@ version: 0.3
 author: DiddiZ
 website: http://diddiz.insane-architects.net/
 main: de.diddiz.Superpickaxe.Superpickaxe
-depend: [Permissions]
 description: Adds a simple super pickaxe.
 commands:
   spa:
     description: 'Enables or disables super pickaxe'
     usage: 'Usage: /<command>'
     aliases: []
+permissions:
+    superpickaxe.*:
+        description: Gives access to all LogBlock commands
+        children:
+            superpickaxe.use: true
+            superpickaxe.breakAll: true
+    superpickaxe.use:
+        description: 'Allows to use the super pickaxe'
+        default: op
+    superpickaxe.breakAll:
+        description: 'Allows to ignore dontBreak listed blocks'
+        default: op

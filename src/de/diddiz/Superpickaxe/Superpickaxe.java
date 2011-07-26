@@ -2,6 +2,7 @@ package de.diddiz.Superpickaxe;
 
 import java.util.HashSet;
 import org.bukkit.ChatColor;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -16,15 +17,15 @@ import com.nijikokun.bukkit.Permissions.Permissions;
 public class Superpickaxe extends JavaPlugin
 {
 	private PermissionHandler permissions;
-	private final HashSet<Integer> playerswithsp = new HashSet<Integer>();
+	private final HashSet<String> playerswithsp = new HashSet<String>();
 
 	@Override
 	public void onEnable() {
 		final PluginManager pm = getServer().getPluginManager();
 		permissions = ((Permissions)pm.getPlugin("Permissions")).getHandler();
 		getConfiguration().load();
-		final SPPlayerListener playerListener = new SPPlayerListener(this, permissions);
-		pm.registerEvent(Type.BLOCK_DAMAGE, new SPBlockListener(this, permissions), Priority.Normal, this);
+		final SPPlayerListener playerListener = new SPPlayerListener(this);
+		pm.registerEvent(Type.BLOCK_DAMAGE, new SPBlockListener(this), Priority.Normal, this);
 		pm.registerEvent(Type.PLAYER_PORTAL, playerListener, Priority.Monitor, this);
 		if (getConfiguration().getBoolean("overrideWorldEditCommands", false))
 			pm.registerEvent(Event.Type.PLAYER_COMMAND_PREPROCESS, playerListener, Event.Priority.Lowest, this);
@@ -57,16 +58,28 @@ public class Superpickaxe extends JavaPlugin
 	}
 
 	void addPlayer(Player player) {
-		playerswithsp.add(player.getName().hashCode());
+		playerswithsp.add(player.getName());
 		player.sendMessage(ChatColor.GREEN + "Super pickaxe enabled.");
 	}
 
 	void removePlayer(Player player) {
-		playerswithsp.remove(player.getName().hashCode());
+		playerswithsp.remove(player.getName());
 		player.sendMessage(ChatColor.GREEN + "Super pickaxe disabled.");
 	}
 
 	boolean hasEnabled(Player player) {
-		return playerswithsp.contains(player.getName().hashCode());
+		return playerswithsp.contains(player.getName());
+	}
+
+	boolean hasPermission(CommandSender sender, String permission) {
+		if (permissions != null && sender instanceof Player)
+			return permissions.has((Player)sender, permission);
+		return sender.hasPermission(permission);
+	}
+
+	boolean hasPermission(CommandSender sender, String permission, World world) {
+		if (permissions != null && sender instanceof Player)
+			return permissions.has(world.getName(), ((Player)sender).getName(), permission);
+		return sender.hasPermission(permission);
 	}
 }

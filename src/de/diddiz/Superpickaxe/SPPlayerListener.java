@@ -4,16 +4,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerPortalEvent;
-import com.nijiko.permissions.PermissionHandler;
 
 public class SPPlayerListener extends PlayerListener
 {
-	private final PermissionHandler permissions;
 	private final Superpickaxe sp;
 
-	SPPlayerListener(Superpickaxe sp, PermissionHandler permissions) {
+	SPPlayerListener(Superpickaxe sp) {
 		this.sp = sp;
-		this.permissions = permissions;
 	}
 
 	@Override
@@ -32,7 +29,7 @@ public class SPPlayerListener extends PlayerListener
 	public void onPlayerPortal(PlayerPortalEvent event) {
 		if (!event.isCancelled()) {
 			final Player player = event.getPlayer();
-			if (sp.hasEnabled(player) && !permissions.has(event.getTo().getWorld().getName(), player.getName(), "superpickaxe.use"))
+			if (sp.hasEnabled(player) && !sp.hasPermission(player, "superpickaxe.use", event.getTo().getWorld()))
 				sp.removePlayer(player);
 		}
 	}

@@ -44,6 +44,7 @@ public class Superpickaxe extends JavaPlugin
 		final SPPlayerListener playerListener = new SPPlayerListener(this);
 		pm.registerEvent(Type.BLOCK_DAMAGE, new SPBlockListener(this), Priority.Normal, this);
 		pm.registerEvent(Type.PLAYER_PORTAL, playerListener, Priority.Monitor, this);
+		pm.registerEvent(Type.PLAYER_TELEPORT, playerListener, Priority.Monitor, this);
 		if (getConfiguration().getBoolean("overrideWorldEditCommands", false))
 			pm.registerEvent(Event.Type.PLAYER_COMMAND_PREPROCESS, playerListener, Event.Priority.Lowest, this);
 		getServer().getLogger().info("Superpickaxe v" + getDescription().getVersion() + " by DiddiZ enabled");

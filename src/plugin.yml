@@ -11,7 +11,7 @@ commands:
     aliases: []
 permissions:
     superpickaxe.*:
-        description: Gives access to all LogBlock commands
+        description: Gives access to all SuperPickaxe commands
         children:
             superpickaxe.use: true
             superpickaxe.breakAll: true

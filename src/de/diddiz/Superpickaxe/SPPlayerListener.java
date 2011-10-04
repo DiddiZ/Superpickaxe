@@ -1,10 +1,9 @@
 package de.diddiz.Superpickaxe;
 
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerListener;
-import org.bukkit.event.player.PlayerPortalEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
 
 public class SPPlayerListener extends PlayerListener
 {
@@ -27,20 +26,9 @@ public class SPPlayerListener extends PlayerListener
 	}
 
 	@Override
-	public void onPlayerPortal(PlayerPortalEvent event) {
-		if (!event.isCancelled()) {
-			final Player player = event.getPlayer();
-			if (sp.hasEnabled(player) && !sp.hasPermission(player, "superpickaxe.use", event.getTo().getWorld()))
-				sp.removePlayer(player);
-		}
-	}
-
-	@Override
-	public void onPlayerTeleport(PlayerTeleportEvent event) {
-		if (!event.isCancelled() && event.getFrom().getWorld() != event.getTo().getWorld()) {
-			final Player player = event.getPlayer();
-			if (sp.hasEnabled(player) && !sp.hasPermission(player, "superpickaxe.use", event.getTo().getWorld()))
-				sp.removePlayer(player);
-		}
+	public void onPlayerChangedWorld(PlayerChangedWorldEvent event) {
+		final Player player = event.getPlayer();
+		if (sp.hasEnabled(player) && !sp.hasPermission(player, "superpickaxe.use"))
+			sp.removePlayer(player);
 	}
 }

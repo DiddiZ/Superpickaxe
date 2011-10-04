@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import org.bukkit.ChatColor;
-import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -92,12 +91,6 @@ public class Superpickaxe extends JavaPlugin
 	boolean hasPermission(CommandSender sender, String permission) {
 		if (permissions != null && sender instanceof Player)
 			return permissions.has((Player)sender, permission);
-		return sender.hasPermission(permission);
-	}
-
-	boolean hasPermission(CommandSender sender, String permission, World world) {
-		if (permissions != null && sender instanceof Player)
-			return permissions.has(world.getName(), ((Player)sender).getName(), permission);
 		return sender.hasPermission(permission);
 	}
 }

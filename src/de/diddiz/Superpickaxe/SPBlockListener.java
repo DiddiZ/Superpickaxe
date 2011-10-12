@@ -1,7 +1,11 @@
 package de.diddiz.Superpickaxe;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import org.bukkit.Bukkit;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.block.BlockListener;
@@ -18,11 +22,12 @@ public class SPBlockListener extends BlockListener
 
 	SPBlockListener(Superpickaxe sp) {
 		this.sp = sp;
-		tools = new HashSet<Integer>(sp.getConfiguration().getIntList("tools", null));
-		dontBreak = new HashSet<Integer>(sp.getConfiguration().getIntList("dontBreak", null));
-		disableDrops = sp.getConfiguration().getBoolean("disableDrops", false);
-		disableToolWear = sp.getConfiguration().getBoolean("disableToolWear", false);
-		consumer = disableToolWear ? (sp.getServer().getPluginManager().getPlugin("LogBlock") != null ? ((LogBlock)sp.getServer().getPluginManager().getPlugin("LogBlock")).getConsumer() : null) : null;
+		final ConfigurationSection cfg = sp.getConfig();
+		tools = new HashSet<Integer>(toIntList(cfg.getList("tools")));
+		dontBreak = new HashSet<Integer>(toIntList(cfg.getList("dontBreak")));
+		disableDrops = cfg.getBoolean("disableDrops", false);
+		disableToolWear = cfg.getBoolean("disableToolWear", false);
+		consumer = disableToolWear ? sp.getServer().getPluginManager().getPlugin("LogBlock") != null ? ((LogBlock)sp.getServer().getPluginManager().getPlugin("LogBlock")).getConsumer() : null : null;
 	}
 
 	@Override
@@ -41,5 +46,21 @@ public class SPBlockListener extends BlockListener
 			if (disableToolWear)
 				tool.setDurability((short)(tool.getDurability() - 1));
 		}
+	}
+
+	static List<Integer> toIntList(List<?> list) {
+		if (list == null)
+			return new ArrayList<Integer>();
+		final List<Integer> ints = new ArrayList<Integer>(list.size());
+		for (final Object obj : list)
+			if (obj instanceof Integer)
+				ints.add((Integer)obj);
+			else
+				try {
+					ints.add(Integer.valueOf(String.valueOf(obj)));
+				} catch (final NumberFormatException ex) {
+					Bukkit.getLogger().warning("[Superpickaxe] Config error: '" + obj + "' is not a number");
+				}
+		return ints;
 	}
 }

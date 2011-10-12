@@ -5,23 +5,24 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.Event.Priority;
 import org.bukkit.event.Event.Type;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.util.config.Configuration;
 import com.nijiko.permissions.PermissionHandler;
 import com.nijikokun.bukkit.Permissions.Permissions;
 
 public class Superpickaxe extends JavaPlugin
 {
 	private PermissionHandler permissions = null;
-	private final HashSet<String> playerswithsp = new HashSet<String>();
+	private final Set<String> playerswithsp = new HashSet<String>();
 
 	@Override
 	public void onEnable() {
@@ -34,17 +35,16 @@ public class Superpickaxe extends JavaPlugin
 		def.put("dontBreak", Arrays.asList(7));
 		def.put("disableDrops", false);
 		def.put("disableToolWear", false);
-		final Configuration config = getConfiguration();
-		config.load();
+		final FileConfiguration config = getConfig();
 		for (final Entry<String, Object> e : def.entrySet())
-			if (config.getProperty(e.getKey()) == null)
-				config.setProperty(e.getKey(), e.getValue());
-		config.save();
+			if (config.contains(e.getKey()))
+				config.set(e.getKey(), e.getValue());
+		saveConfig();
 		final SPPlayerListener playerListener = new SPPlayerListener(this);
 		pm.registerEvent(Type.BLOCK_DAMAGE, new SPBlockListener(this), Priority.Normal, this);
 		pm.registerEvent(Type.PLAYER_PORTAL, playerListener, Priority.Monitor, this);
 		pm.registerEvent(Type.PLAYER_TELEPORT, playerListener, Priority.Monitor, this);
-		if (getConfiguration().getBoolean("overrideWorldEditCommands", false))
+		if (getConfig().getBoolean("overrideWorldEditCommands", false))
 			pm.registerEvent(Event.Type.PLAYER_COMMAND_PREPROCESS, playerListener, Event.Priority.Lowest, this);
 		getServer().getLogger().info("Superpickaxe v" + getDescription().getVersion() + " by DiddiZ enabled");
 	}

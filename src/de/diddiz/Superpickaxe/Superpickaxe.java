@@ -1,5 +1,6 @@
 package de.diddiz.Superpickaxe;
 
+import static org.bukkit.Bukkit.getLogger;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -11,7 +12,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.event.Event.Priority;
 import org.bukkit.event.Event.Type;
 import org.bukkit.plugin.PluginManager;
@@ -37,40 +37,43 @@ public class Superpickaxe extends JavaPlugin
 		def.put("disableToolWear", false);
 		final FileConfiguration config = getConfig();
 		for (final Entry<String, Object> e : def.entrySet())
-			if (config.contains(e.getKey()))
+			if (!config.contains(e.getKey()))
 				config.set(e.getKey(), e.getValue());
 		saveConfig();
 		final SPPlayerListener playerListener = new SPPlayerListener(this);
 		pm.registerEvent(Type.BLOCK_DAMAGE, new SPBlockListener(this), Priority.Normal, this);
-		pm.registerEvent(Type.PLAYER_PORTAL, playerListener, Priority.Monitor, this);
-		pm.registerEvent(Type.PLAYER_TELEPORT, playerListener, Priority.Monitor, this);
-		if (getConfig().getBoolean("overrideWorldEditCommands", false))
-			pm.registerEvent(Event.Type.PLAYER_COMMAND_PREPROCESS, playerListener, Event.Priority.Lowest, this);
-		getServer().getLogger().info("Superpickaxe v" + getDescription().getVersion() + " by DiddiZ enabled");
+		pm.registerEvent(Type.PLAYER_CHANGED_WORLD, playerListener, Priority.Monitor, this);
+		if (getConfig().getBoolean("overrideWorldEditCommands", false) && pm.isPluginEnabled("WorldEdit")) {
+			getLogger().info("[Superpickaxe] Overriding WorldEdit commands");
+			getServer().getPluginCommand("/").setExecutor(this);
+			getServer().getPluginCommand("superpickaxe").setExecutor(this);
+			pm.registerEvent(Type.PLAYER_COMMAND_PREPROCESS, playerListener, Priority.Lowest, this);
+		}
+		getLogger().info("Superpickaxe v" + getDescription().getVersion() + " by DiddiZ enabled");
 	}
 
 	@Override
 	public void onDisable() {
-		getServer().getLogger().info("Superpickaxe disabled");
+		getLogger().info("Superpickaxe disabled");
 	}
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
-		if (!cmd.getName().equalsIgnoreCase("spa"))
-			return false;
-		if (!(sender instanceof Player)) {
+		final JavaPlugin we = (JavaPlugin)getServer().getPluginManager().getPlugin("WorldEdit");
+		new Throwable().printStackTrace();
+		getLogger().info("exe: " + we.getCommand("/").toString());
+		getLogger().info("exe: " + getServer().getPluginCommand("/").toString());
+		if (sender instanceof Player) {
+			final Player player = (Player)sender;
+			if (hasPermission(player, "superpickaxe.use")) {
+				if (hasEnabled(player))
+					removePlayer(player);
+				else
+					addPlayer(player);
+			} else
+				player.sendMessage(ChatColor.RED + "You aren't allowed to do this.");
+		} else
 			sender.sendMessage("You aren't a player");
-			return true;
-		}
-		final Player player = (Player)sender;
-		if (!hasPermission(player, "superpickaxe.use")) {
-			player.sendMessage(ChatColor.RED + "You aren't allowed to do this.");
-			return true;
-		}
-		if (hasEnabled(player))
-			removePlayer(player);
-		else
-			addPlayer(player);
 		return true;
 	}
 

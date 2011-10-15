@@ -17,7 +17,7 @@ public class SPPlayerListener extends PlayerListener
 	public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
 		if (!event.isCancelled()) {
 			final String msg = event.getMessage().toLowerCase();
-			if (msg.equals("/") || msg.equals("//") || msg.equals("/,") || msg.equals("sp")) {
+			if (msg.equals("/") || msg.equals("//") || msg.equals("/,") || msg.equals("/sp")) {
 				event.setMessage("dummy");
 				event.setCancelled(true);
 				sp.getServer().dispatchCommand(event.getPlayer(), "spa");

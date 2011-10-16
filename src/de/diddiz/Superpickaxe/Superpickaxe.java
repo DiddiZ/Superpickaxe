@@ -59,10 +59,6 @@ public class Superpickaxe extends JavaPlugin
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
-		final JavaPlugin we = (JavaPlugin)getServer().getPluginManager().getPlugin("WorldEdit");
-		new Throwable().printStackTrace();
-		getLogger().info("exe: " + we.getCommand("/").toString());
-		getLogger().info("exe: " + getServer().getPluginCommand("/").toString());
 		if (sender instanceof Player) {
 			final Player player = (Player)sender;
 			if (hasPermission(player, "superpickaxe.use")) {

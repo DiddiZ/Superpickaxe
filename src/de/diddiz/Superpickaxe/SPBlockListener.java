@@ -27,7 +27,7 @@ public class SPBlockListener extends BlockListener
 		dontBreak = new HashSet<Integer>(toIntList(cfg.getList("dontBreak")));
 		disableDrops = cfg.getBoolean("disableDrops", false);
 		disableToolWear = cfg.getBoolean("disableToolWear", false);
-		consumer = disableToolWear ? sp.getServer().getPluginManager().getPlugin("LogBlock") != null ? ((LogBlock)sp.getServer().getPluginManager().getPlugin("LogBlock")).getConsumer() : null : null;
+		consumer = disableToolWear ? sp.getServer().getPluginManager().isPluginEnabled("LogBlock") ? ((LogBlock)sp.getServer().getPluginManager().getPlugin("LogBlock")).getConsumer() : null : null;
 	}
 
 	@Override

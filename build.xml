@@ -9,6 +9,7 @@
 		<javac srcdir="src/" destdir="bin/" classpath="lib/bukkit.jar;lib/Permissions.jar;lib/LogBlock.jar" debug="true" debuglevel="lines,source" includeantruntime="false"/>
 		<jar destfile="Superpickaxe.jar">
 			<fileset dir="bin/"/>
+			<fileset file="src/plugin.yml"/>
 		</jar>
 	</target>
 </project>

@@ -2,7 +2,7 @@ name: Superpickaxe
 version: 0.4d
 author: DiddiZ
 website: http://diddiz.insane-architects.net/
-main: de.diddiz.Superpickaxe.Superpickaxe
+main: de.diddiz.superpickaxe.Superpickaxe
 description: Adds a simple super pickaxe.
 softdepend: [WorldEdit]
 commands:

@@ -1,4 +1,4 @@
-package de.diddiz.Superpickaxe;
+package de.diddiz.superpickaxe;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerChangedWorldEvent;

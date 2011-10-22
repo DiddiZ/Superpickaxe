@@ -1,4 +1,4 @@
-package de.diddiz.Superpickaxe;
+package de.diddiz.superpickaxe;
 
 import static org.bukkit.Bukkit.getLogger;
 import java.util.Arrays;

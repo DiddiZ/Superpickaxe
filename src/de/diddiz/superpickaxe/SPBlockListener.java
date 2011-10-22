@@ -1,4 +1,4 @@
-package de.diddiz.Superpickaxe;
+package de.diddiz.superpickaxe;
 
 import java.util.ArrayList;
 import java.util.HashSet;

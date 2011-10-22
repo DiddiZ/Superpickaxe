@@ -7,7 +7,7 @@
 		<get src="http://www.theyeticave.net/downloads/permissions/3.1.6/Permissions.jar" dest="lib/Permissions.jar"/>
 		<get src="http://diddiz.insane-architects.net:8080/job/LogBlock/lastSuccessfulBuild/artifact/LogBlock.jar" dest="lib/LogBlock.jar"/>
 		<javac srcdir="src/" destdir="bin/" classpath="lib/bukkit.jar;lib/Permissions.jar;lib/LogBlock.jar" debug="true" debuglevel="lines,source" includeantruntime="false"/>
-		<jar destfile="Superpickaxe.jar" manifest="MANIFEST.MF">
+		<jar destfile="Superpickaxe.jar">
 			<fileset dir="bin/"/>
 		</jar>
 	</target>

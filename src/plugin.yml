@@ -4,7 +4,7 @@ author: DiddiZ
 website: http://diddiz.insane-architects.net/
 main: de.diddiz.superpickaxe.Superpickaxe
 description: Adds a simple super pickaxe.
-softdepend: [WorldEdit]
+softdepend: [LogBlock, WorldEdit]
 commands:
   spa:
     description: 'Enables or disables super pickaxe'

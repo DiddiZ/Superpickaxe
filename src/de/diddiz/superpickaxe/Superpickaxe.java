@@ -1,6 +1,8 @@
 package de.diddiz.superpickaxe;
 
 import static org.bukkit.Bukkit.getLogger;
+import static org.bukkit.Bukkit.getPluginCommand;
+import static org.bukkit.Bukkit.getPluginManager;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -26,7 +28,7 @@ public class Superpickaxe extends JavaPlugin
 
 	@Override
 	public void onEnable() {
-		final PluginManager pm = getServer().getPluginManager();
+		final PluginManager pm = getPluginManager();
 		if (pm.getPlugin("Permissions") != null)
 			permissions = ((Permissions)pm.getPlugin("Permissions")).getHandler();
 		final Map<String, Object> def = new HashMap<String, Object>();
@@ -43,10 +45,11 @@ public class Superpickaxe extends JavaPlugin
 		final SPPlayerListener playerListener = new SPPlayerListener(this);
 		pm.registerEvent(Type.BLOCK_DAMAGE, new SPBlockListener(this), Priority.Normal, this);
 		pm.registerEvent(Type.PLAYER_CHANGED_WORLD, playerListener, Priority.Monitor, this);
-		if (getConfig().getBoolean("overrideWorldEditCommands", false) && pm.isPluginEnabled("WorldEdit")) {
+		if (getConfig().getBoolean("overrideWorldEditCommands")) {
 			getLogger().info("[Superpickaxe] Overriding WorldEdit commands");
-			getServer().getPluginCommand("/").setExecutor(this);
-			getServer().getPluginCommand("superpickaxe").setExecutor(this);
+			for (final String cmd : new String[]{"/", "superpickaxe"})
+				if (getPluginCommand(cmd) != null)
+					getPluginCommand(cmd).setExecutor(this);
 			pm.registerEvent(Type.PLAYER_COMMAND_PREPROCESS, playerListener, Priority.Lowest, this);
 		}
 		getLogger().info("Superpickaxe v" + getDescription().getVersion() + " by DiddiZ enabled");

@@ -74,7 +74,7 @@ public class Superpickaxe extends JavaPlugin implements Listener
 				if (getPluginCommand(cmd) != null)
 					getPluginCommand(cmd).setExecutor(this);
 		}
-		getLogger().info("Superpickaxe v" + getDescription().getVersion() + " by DiddiZ enabled");
+		getLogger().info("StompzPick v" + getDescription().getVersion() + " by DiddiZ enabled");
 	}
 
 	@Override

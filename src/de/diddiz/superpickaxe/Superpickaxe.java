@@ -74,7 +74,7 @@ public class Superpickaxe extends JavaPlugin implements Listener
 				if (getPluginCommand(cmd) != null)
 					getPluginCommand(cmd).setExecutor(this);
 		}
-		getLogger().info("StompzPick v" + getDescription().getVersion() + " by DiddiZ enabled");
+		getLogger().info("Superpickaxe v" + getDescription().getVersion() + " by DiddiZ enabled");
 	}
 
 	@Override
@@ -135,12 +135,12 @@ public class Superpickaxe extends JavaPlugin implements Listener
 
 	void addPlayer(Player player) {
 		playerswithsp.add(player.getName());
-		player.sendMessage(ChatColor.GREEN + "Super pickaxe enabled.");
+		player.sendMessage(ChatColor.GREEN + "StompzHammer enabled.");
 	}
 
 	void removePlayer(Player player) {
 		playerswithsp.remove(player.getName());
-		player.sendMessage(ChatColor.GREEN + "Super pickaxe disabled.");
+		player.sendMessage(ChatColor.GREEN + "StompzHammer disabled.");
 	}
 
 	boolean hasEnabled(Player player) {
